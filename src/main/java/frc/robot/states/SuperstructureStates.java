@@ -32,7 +32,7 @@ public class SuperstructureStates {
     }
 
     /**
-     * Describes the {@link ControlMode} of a {@link ClawState} for the OpenClose motor (CTRE)
+     * Describes the ControlMode of a {@link ClawState} for the OpenClose motor
      */
     // general rule of thumb...don't use suppress warnings if you don't absolutely need to!
     // they are only here because we don't want you to be confused by
@@ -41,23 +41,12 @@ public class SuperstructureStates {
     public enum ClawOpenCloseControlMode {
         /**
          * Positional control mode for the OpenClose motor
-         * @see ControlMode#Position
          */
-        POSITION(ControlMode.Position),
+        POSITION,
         /**
          * DutyCycle (PercentOutput) control mode for the OpenClose motor
-         * @see ControlMode#PercentOutput
          */
-        DUTY_CYCLE(ControlMode.PercentOutput);
-
-        private final ControlMode controlMode;
-        ClawOpenCloseControlMode(final ControlMode controlMode) {
-            this.controlMode = controlMode;
-        }
-
-        public ControlMode getControlMode() {
-            return controlMode;
-        }
+        DUTY_CYCLE
     }
 
     // see previous comment about suppression of warnings

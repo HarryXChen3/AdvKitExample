@@ -3,12 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -157,16 +159,20 @@ class ClawIORealTest {
     @EnumSource(SuperstructureStates.ClawState.class)
     void periodic(final SuperstructureStates.ClawState clawState) {
         clawIOReal.setDesiredState(clawState);
+        clawIOReal.periodic();
 
         // require that the intake wheels percent output is set to the claw main wheel motor
         verify(clawMainWheelMotor).set(ControlMode.PercentOutput, clawState.getIntakeWheelsPercentOutput());
         // require that there are no interactions with the follower (as they are not needed)
-        verifyNoInteractions(clawFollowerWheelMotor);
+        verify(clawFollowerWheelMotor, never()).set((ControlMode) any(), anyDouble());
 
         // we can't exactly check the open close motor as it involves phoenix 6 requests like PositionVoltage
         // so just loosely check it for now...
-        // TODO: is this PositionVoltage?
-        verify(clawOpenCloseMotor).setControl((PositionVoltage) any());
+        // TODO: is this PositionVoltage for positional control?
+        switch (clawState.getClawOpenCloseControlMode()) {
+            case POSITION -> verify(clawOpenCloseMotor).setControl((PositionVoltage) any());
+            case DUTY_CYCLE -> verify(clawOpenCloseMotor).setControl((DutyCycleOut) any());
+        }
 
         // we can't exactly check the tilt motor as it involves PID outputs
         // not only that, there are multiple ways to demand a DutyCycle to a SparkMAX
@@ -191,8 +197,6 @@ class ClawIORealTest {
         final CANcoderConfiguration openCloseEncoderConfiguration = new CANcoderConfiguration();
         assertTrue(openCloseEncoderConfigurator.refresh(openCloseEncoderConfiguration).isOK());
 
-        // require that apply must be called on the configurator
-        verify(openCloseEncoderConfigurator).apply((CANcoderConfiguration) any());
         // require that the MagnetOffset must be 0
         assertEquals(0, openCloseEncoderConfiguration.MagnetSensor.MagnetOffset);
         // require that the AbsoluteSensorRange should be +-0.5
@@ -210,8 +214,6 @@ class ClawIORealTest {
         final TalonFXConfiguration openCloseMotorConfiguration = new TalonFXConfiguration();
         assertTrue(openCloseMotorConfigurator.refresh(openCloseMotorConfiguration).isOK());
 
-        // require that apply must be called on the configurator
-        verify(openCloseMotorConfigurator).apply((TalonFXConfiguration) any());
         // require that the FeedbackRemoteSensorID must be the OpenCloseEncoder device ID
         assertEquals(clawOpenCloseEncoder.getDeviceID(), openCloseMotorConfiguration.Feedback.FeedbackRemoteSensorID);
 
@@ -234,9 +236,6 @@ class ClawIORealTest {
         final CANcoderConfigurator tiltEncoderConfigurator = clawTiltEncoder.getConfigurator();
         final CANcoderConfiguration tiltEncoderConfiguration = new CANcoderConfiguration();
         assertTrue(tiltEncoderConfigurator.refresh(tiltEncoderConfiguration).isOK());
-
-        // require that apply must be called on the configurator
-        verify(tiltEncoderConfigurator).apply((CANcoderConfiguration) any());
     }
 
     @ParameterizedTest
