@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="780b8692-6143-43fc-9f3f-63b288d32513" name="Changes" comment="Move a @SuppressWarnings annotation to cover another warning">
-      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/frc/robot/subsystems/ClawIORealTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/testutils/JNIUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/RobotContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/RobotContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/ClawIOReal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/ClawIOReal.java" afterDir="false" />
+    <list default="true" id="780b8692-6143-43fc-9f3f-63b288d32513" name="Changes" comment="Add ClawIORealTest and subsequent required modifications to ClawIOReal; some minor changes to the order of initialization in RobotContainer and switching a Phoenix 5 CANCoder to a Phoenix 6 CANcoder; add JNIUtils for loading JNIs and the HAL; add Constants for what will be a combined RobotMap &amp; Constants file (good enough for this)">
+      <change beforePath="$PROJECT_DIR$/src/test/java/frc/robot/subsystems/ClawIORealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/frc/robot/subsystems/ClawIORealTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,7 +244,7 @@
       <option name="presentableId" value="Default" />
       <updated>1693242201010</updated>
       <workItem from="1693242202273" duration="2152000" />
-      <workItem from="1693264301080" duration="19654000" />
+      <workItem from="1693264301080" duration="21052000" />
     </task>
     <task id="LOCAL-00001" summary="Start work on templating some of the stuff that will guide students through how to navigate and understand both the existing structure and what's required of them; more formally, significantly improved documentation everywhere; added comments/documentation that addresses what students might need to do in specific places; added preliminary ClawTest (which may need to be expanded upon for more ACs)">
       <option name="closed" value="true" />
@@ -266,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693309431845</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add ClawIORealTest and subsequent required modifications to ClawIOReal; some minor changes to the order of initialization in RobotContainer and switching a Phoenix 5 CANCoder to a Phoenix 6 CANcoder; add JNIUtils for loading JNIs and the HAL; add Constants for what will be a combined RobotMap &amp; Constants file (good enough for this)">
+      <option name="closed" value="true" />
+      <created>1693348437079</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1693348437079</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,7 +279,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Start work on templating some of the stuff that will guide students through how to navigate and understand both the existing structure and what's required of them; more formally, significantly improved documentation everywhere; added comments/documentation that addresses what students might need to do in specific places; added preliminary ClawTest (which may need to be expanded upon for more ACs)" />
     <MESSAGE value="Move a @SuppressWarnings annotation to cover another warning" />
-    <option name="LAST_COMMIT_MESSAGE" value="Move a @SuppressWarnings annotation to cover another warning" />
+    <MESSAGE value="Add ClawIORealTest and subsequent required modifications to ClawIOReal; some minor changes to the order of initialization in RobotContainer and switching a Phoenix 5 CANCoder to a Phoenix 6 CANcoder; add JNIUtils for loading JNIs and the HAL; add Constants for what will be a combined RobotMap &amp; Constants file (good enough for this)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add ClawIORealTest and subsequent required modifications to ClawIOReal; some minor changes to the order of initialization in RobotContainer and switching a Phoenix 5 CANCoder to a Phoenix 6 CANcoder; add JNIUtils for loading JNIs and the HAL; add Constants for what will be a combined RobotMap &amp; Constants file (good enough for this)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
