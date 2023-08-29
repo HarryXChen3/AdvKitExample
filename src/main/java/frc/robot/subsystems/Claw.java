@@ -8,8 +8,6 @@ public class Claw extends SubsystemBase {
     private final ClawIO clawIO;
     private final ClawIOInputsAutoLogged inputs;
 
-    private SuperstructureStates.ClawState desiredState = SuperstructureStates.ClawState.CLAW_STANDBY;
-
     /**
      * Example constructor that takes a {@link ClawIO}.
      * @param clawIO the {@link ClawIO}
@@ -39,10 +37,7 @@ public class Claw extends SubsystemBase {
      * @param desiredState the new desired {@link frc.robot.states.SuperstructureStates.ClawState}
      * @see ClawIO#setDesiredState(SuperstructureStates.ClawState)
      */
-    public void setDesiredState(final SuperstructureStates.ClawState desiredState) {
-        this.desiredState = desiredState;
-        clawIO.setDesiredState(desiredState);
-    }
+    public void setDesiredState(final SuperstructureStates.ClawState desiredState) {}
 
     /**
      * Get the desired {@link SuperstructureStates.ClawState}
@@ -50,6 +45,6 @@ public class Claw extends SubsystemBase {
      * @see SuperstructureStates.ClawState
      */
     public SuperstructureStates.ClawState getDesiredState() {
-        return desiredState;
+        return null;
     }
 }
