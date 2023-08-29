@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.revrobotics.CANSparkMax;
+
 /**
  * This is the IO layer of the subsystem, which should only contain the direct hardware interactions.
  * @implSpec you <b>need</b> to implement all methods found in {@link ClawIO},
