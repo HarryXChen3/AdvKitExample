@@ -2,20 +2,52 @@ package frc.robot.states;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+/**
+ * States relevant to the Superstructure of the combined Elevator and Claw.
+ */
 public class SuperstructureStates {
+    /**
+     * Describes the category (mutual with the elevator) that a state belongs to.
+     * <p>i.e. any state that involves scoring will be {@link ElevatorClawStateType#SCORING}</p>
+     * @see ClawState
+     */
     public enum ElevatorClawStateType {
         STANDBY,
         INTAKING,
         SCORING
     }
 
+    /**
+     * Describes the ControlMode of a {@link ClawState} for the Tilt motor (rev)
+     */
     public enum ClawTiltControlMode {
+        /**
+         * Positional control mode for the Tilt motor
+         */
         POSITION,
+        /**
+         * DutyCycle control mode for the Tilt motor
+         */
         DUTY_CYCLE
     }
 
+    /**
+     * Describes the {@link ControlMode} of a {@link ClawState} for the OpenClose motor (CTRE)
+     */
+    // general rule of thumb...don't use suppress warnings if you don't absolutely need to!
+    // they are only here because we don't want you to be confused by
+    // warnings (that exist due to unused code) when committing!
+    @SuppressWarnings("unused")
     public enum ClawOpenCloseControlMode {
+        /**
+         * Positional control mode for the OpenClose motor
+         * @see ControlMode#Position
+         */
         POSITION(ControlMode.Position),
+        /**
+         * DutyCycle (PercentOutput) control mode for the OpenClose motor
+         * @see ControlMode#PercentOutput
+         */
         DUTY_CYCLE(ControlMode.PercentOutput);
 
         private final ControlMode controlMode;
@@ -28,26 +60,12 @@ public class SuperstructureStates {
         }
     }
 
+    // see previous comment about suppression of warnings
+    @SuppressWarnings("unused")
     public enum ClawState {
-        //Claw shoot cube
-        CLAW_OUTTAKE(
-                -0.1,
-                ClawTiltControlMode.POSITION,
-                0.295,
-                ClawOpenCloseControlMode.DUTY_CYCLE,
-                0.2,
-                ElevatorClawStateType.SCORING
-        ),
-        //Claw shoot cube
-        CLAW_OUTTAKE_HYBRID(
-                -0.2,
-                ClawTiltControlMode.POSITION,
-                .295,
-                ClawOpenCloseControlMode.DUTY_CYCLE,
-                .3,
-                ElevatorClawStateType.SCORING
-        ),
-        //Claw tilted down and closed
+        /**
+         * Claw stowed up and standby wheel speed, open close is holding
+         */
         CLAW_HOLDING(
                 0.2,
                 ClawTiltControlMode.POSITION,
@@ -56,16 +74,9 @@ public class SuperstructureStates {
                 -0.37,
                 ElevatorClawStateType.STANDBY
         ),
-        //Claw tilted down and open cone
-        CLAW_INTAKING_CONE(
-                0.5,
-                ClawTiltControlMode.POSITION,
-                0.3,
-                ClawOpenCloseControlMode.POSITION,
-                0.024,
-                ElevatorClawStateType.INTAKING
-        ),
-        //Claw tilted down and open cube
+        /**
+         * Claw tilted down and open cube
+         */
         CLAW_INTAKING_CUBE(
                 0.5,
                 ClawTiltControlMode.POSITION,
@@ -74,7 +85,9 @@ public class SuperstructureStates {
                 0.171,
                 ElevatorClawStateType.INTAKING
         ),
-        //Claw tilted down and standby wheel speed
+        /**
+         * Claw stowed up and standby wheel speed, open close is open
+         */
         CLAW_STANDBY(
                 0.2,
                 ClawTiltControlMode.POSITION,
@@ -82,80 +95,39 @@ public class SuperstructureStates {
                 ClawOpenCloseControlMode.POSITION,
                 0,
                 ElevatorClawStateType.STANDBY
-        ),
-        //Drop claw to outtake height
-        CLAW_DROP(
-                0.3,
-                ClawTiltControlMode.POSITION,
-                0.2,
-                ClawOpenCloseControlMode.DUTY_CYCLE,
-                -0.37,
-                ElevatorClawStateType.SCORING
-        ),
-        CLAW_ANGLE_SHOOT(
-                0.2,
-                ClawTiltControlMode.POSITION,
-                0.12,
-                ClawOpenCloseControlMode.DUTY_CYCLE,
-                -0.37,
-                ElevatorClawStateType.SCORING
-        ),
-        CLAW_SHOOT_HIGH(
-                -0.8,
-                ClawTiltControlMode.POSITION,
-                0.12,
-                ClawOpenCloseControlMode.DUTY_CYCLE,
-                -0.37,
-                ElevatorClawStateType.SCORING
-        ),
-        // TODO: when we get real robot check if this is mid or low, it used to be named CLAW_SHOOT_LOW (max cooked)
-        CLAW_SHOOT_MID(
-                -0.3,
-                ClawTiltControlMode.POSITION,
-                0.12,
-                ClawOpenCloseControlMode.DUTY_CYCLE,
-                -0.37,
-                ElevatorClawStateType.SCORING
-        ),
-        // TODO: tune these numbers on real
-        CLAW_SHOOT_LOW(
-                -0.15,
-                ClawTiltControlMode.POSITION,
-                0.2,
-                ClawOpenCloseControlMode.DUTY_CYCLE,
-                0.171,
-                ElevatorClawStateType.SCORING
-        ),
-        CLAW_ANGLE_CUBE(
-                0.6,
-                ClawTiltControlMode.POSITION,
-                0.4,
-                ClawOpenCloseControlMode.POSITION,
-                0.171,
-                ElevatorClawStateType.INTAKING
-        ),
-        SINGLE_SUB(
-                0.5,
-                ClawTiltControlMode.POSITION,
-                0.2,
-                ClawOpenCloseControlMode.POSITION,
-                0.049,
-                ElevatorClawStateType.INTAKING
-        ),
-        TIPPED_CONE(
-                0.5,
-                ClawTiltControlMode.POSITION,
-                0.45,
-                ClawOpenCloseControlMode.POSITION,
-                0.024,
-                ElevatorClawStateType.INTAKING
         );
 
+        /**
+         * The PercentOutput of the intake wheels at this state.
+         */
         final double intakeWheelsPercentOutput;
+        /**
+         * The {@link ClawTiltControlMode} of this state.
+         */
         final ClawTiltControlMode clawTiltControlMode;
+        /**
+         * The Tilt Control Input.
+         *
+         * <p>(This input may represent different units depending on the current {@link ClawTiltControlMode})</p>
+         * <p>When {@link ClawTiltControlMode} is {@link ClawTiltControlMode#POSITION},
+         * the units for this control input are in position rotations</p>
+         */
         final double tiltControlInput;
+        /**
+         * The {@link ClawOpenCloseControlMode} of this state.
+         */
         final ClawOpenCloseControlMode clawOpenCloseControlMode;
+        /**
+         * The OpenClose Control Input.
+         *
+         * <p>(This input may represent different units depending on the current {@link ClawOpenCloseControlMode})</p>
+         * <p>When {@link ClawOpenCloseControlMode} is {@link ClawOpenCloseControlMode#POSITION},
+         * the units for this control input are in position rotations</p>
+         */
         final double openCloseControlInput;
+        /**
+         * The {@link ElevatorClawStateType} of this state.
+         */
         final ElevatorClawStateType elevatorClawStateType;
 
         public double getIntakeWheelsPercentOutput() {
