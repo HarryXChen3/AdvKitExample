@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="780b8692-6143-43fc-9f3f-63b288d32513" name="Changes" comment="Move a @SuppressWarnings annotation to cover another warning">
-      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/frc/robot/subsystems/ClawIORealTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/testutils/JNIUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/RobotContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/RobotContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/states/SuperstructureStates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/states/SuperstructureStates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/Claw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/Claw.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/ClawIOReal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/ClawIOReal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/frc/robot/subsystems/ClawIORealTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/frc/robot/subsystems/ClawIORealTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +45,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -65,6 +69,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "OverrideImplement.generate.javadoc": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -78,6 +83,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.18965517",
@@ -99,7 +105,51 @@
       <recent name="testutils" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.ClawIORealTest">
+  <component name="RunManager" selected="Gradle.AdvKitExample [test]">
+    <configuration name="AdvKitExample [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="buildDependents" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="AdvKitExample [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="ClawIORealTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -172,45 +222,6 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="ClawTest.periodic_shouldCallIOPeriodicAndUpdateInputs" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;frc.robot.subsystems.ClawTest.periodic_shouldCallIOPeriodicAndUpdateInputs&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="ClawTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AdvKitTraining.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="frc.robot.subsystems.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="frc.robot.subsystems" />
-      <option name="MAIN_CLASS_NAME" value="frc.robot.subsystems.ClawTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Gradle.Build &amp; Deploy Robot" />
       <item itemvalue="Gradle.Build &amp; Deploy Robot for Debugging" />
@@ -221,21 +232,21 @@
       <item itemvalue="Gradle.Clean Build &amp; Deploy Robot for Debugging" />
       <item itemvalue="Gradle.Clean Build &amp; Run Simulate Java" />
       <item itemvalue="Gradle.Clean Build Robot" />
+      <item itemvalue="Gradle.AdvKitExample [buildDependents]" />
+      <item itemvalue="Gradle.AdvKitExample [test]" />
       <item itemvalue="Gradle.ClawIORealTest" />
       <item itemvalue="Gradle.ClawIORealTest.config" />
       <item itemvalue="Gradle.ClawTest" />
-      <item itemvalue="Gradle.ClawTest.periodic_shouldCallIOPeriodicAndUpdateInputs" />
-      <item itemvalue="JUnit.ClawTest" />
       <item itemvalue="Remote JVM Debug.Debug Robot via IP" />
       <item itemvalue="Remote JVM Debug.Debug Robot via USB" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.AdvKitExample [test]" />
+        <item itemvalue="Gradle.AdvKitExample [buildDependents]" />
         <item itemvalue="Gradle.ClawIORealTest" />
         <item itemvalue="Gradle.ClawIORealTest.config" />
         <item itemvalue="Gradle.ClawTest" />
-        <item itemvalue="Gradle.ClawTest.periodic_shouldCallIOPeriodicAndUpdateInputs" />
-        <item itemvalue="JUnit.ClawTest" />
       </list>
     </recent_temporary>
   </component>
@@ -271,6 +282,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Start work on templating some of the stuff that will guide students through how to navigate and understand both the existing structure and what's required of them; more formally, significantly improved documentation everywhere; added comments/documentation that addresses what students might need to do in specific places; added preliminary ClawTest (which may need to be expanded upon for more ACs)" />

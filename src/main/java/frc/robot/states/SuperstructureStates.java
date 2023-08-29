@@ -1,7 +1,5 @@
 package frc.robot.states;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 /**
  * States relevant to the Superstructure of the combined Elevator and Claw.
  */
