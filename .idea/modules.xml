@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvKitTraining.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvKitTraining.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvKitTraining.test.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvKitTraining.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AdvKitExample.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AdvKitExample.main.iml" />
     </modules>
   </component>
 </project>
