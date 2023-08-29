@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -30,21 +29,21 @@ import edu.wpi.first.wpilibj2.command.Commands;
  * </pre>
  */
 public class RobotContainer {
-    public final TalonSRX clawMainWheelsMotor;
-    public final TalonSRX clawFollowerWheelsMotor;
+    public final TalonSRX clawMainWheelMotor;
+    public final TalonSRX clawFollowerWheelMotor;
     public final TalonFX clawOpenCloseMotor;
-    public final CANCoder clawOpenCloseEncoder;
-    public final CANcoder clawTiltEncoder;
+    public final CANcoder clawOpenCloseEncoder;
     public final CANSparkMax clawTiltNeo;
+    public final CANcoder clawTiltEncoder;
 
     /**
      * The constructor is where you will typically initialize all objects in this class.
      */
     public RobotContainer() {
-        clawMainWheelsMotor = new TalonSRX(2);
-        clawFollowerWheelsMotor = new TalonSRX(3);
+        clawMainWheelMotor = new TalonSRX(2);
+        clawFollowerWheelMotor = new TalonSRX(3);
         clawOpenCloseMotor = new TalonFX(4);
-        clawOpenCloseEncoder = new CANCoder(5);
+        clawOpenCloseEncoder = new CANcoder(5);
 
         clawTiltNeo = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
         clawTiltEncoder = new CANcoder(7);
