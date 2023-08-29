@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.AutoLog;
  * The common abstraction layer between subsystems (which are completely detached from the hardware) and the underlying
  * IO layers (which commonly consist of real and simulated implementations)
  */
+@SuppressWarnings("unused")
 public interface ClawIO {
     /**
      * The current inputs of the IO layer (that are fed into the abstracted subsystem layer,
@@ -78,7 +79,6 @@ public interface ClawIO {
     /**
      * Configs the hardware (or simulated hardware) of the IO layer.
      */
-    @SuppressWarnings("unused")
     default void config() {}
 
     /**
