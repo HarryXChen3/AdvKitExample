@@ -9,8 +9,12 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.commands.ClawTeleop;
+import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.ClawIOReal;
 
 /**
  * This class typically contains all subsystem and hardware declarations.
@@ -36,6 +40,9 @@ public class RobotContainer {
     public final CANSparkMax clawTiltNeo;
     public final CANcoder clawTiltEncoder;
 
+    public final Claw claw;
+    public final ClawTeleop clawTeleop;
+
     /**
      * The constructor is where you will typically initialize all objects in this class.
      */
@@ -47,6 +54,18 @@ public class RobotContainer {
 
         clawTiltNeo = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
         clawTiltEncoder = new CANcoder(7);
+
+        claw = new Claw(new ClawIOReal(
+                clawMainWheelMotor,
+                clawFollowerWheelMotor,
+                Constants.Claw.MAIN_WHEEL_MOTOR_INVERTED,
+                clawOpenCloseMotor,
+                Constants.Claw.OPEN_CLOSE_MOTOR_INVERTED,
+                clawOpenCloseEncoder,
+                clawTiltNeo,
+                clawTiltEncoder
+        ));
+        clawTeleop = new ClawTeleop(claw);
 
         configureBindings();
     }
@@ -62,6 +81,6 @@ public class RobotContainer {
      * @return the autonomous {@link Command}
      */
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return Commands.waitUntil(() -> !RobotState.isAutonomous());
     }
 }

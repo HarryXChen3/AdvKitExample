@@ -93,6 +93,8 @@ public class Robot extends LoggedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+
+        CommandScheduler.getInstance().setDefaultCommand(robotContainer.claw, robotContainer.clawTeleop);
     }
 
     /**
