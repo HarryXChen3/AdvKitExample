@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -179,6 +180,28 @@ class ClawIORealTest {
         // for now, just don't check it at all...
     }
 
+    private static boolean invertTypeToBool(final InvertType invertType) {
+        return switch(invertType){
+            case None -> false;
+            case InvertMotorOutput -> true;
+            default -> throw new RuntimeException(String.format("Cannot convert InvertType %s to bool", invertType));
+        };
+    }
+
+    private static InvertType boolToInvertType(final boolean inverted) {
+        return inverted ? InvertType.InvertMotorOutput : InvertType.None;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static InvertType invert(final InvertType invertType, final BaseMotorController parent) {
+        return switch(invertType){
+            case None -> InvertType.InvertMotorOutput;
+            case InvertMotorOutput -> InvertType.None;
+            case FollowMaster -> boolToInvertType(parent.getInverted());
+            case OpposeMaster -> boolToInvertType(!parent.getInverted());
+        };
+    }
+
     @Test
     void config() {
         when(clawMainWheelMotor.configFactoryDefault()).thenReturn(ErrorCode.OK);
@@ -186,11 +209,15 @@ class ClawIORealTest {
         clawIOReal.config();
 
         // require that the main wheel motor must be properly inverted
-        verify(clawMainWheelMotor).setInverted(Constants.Claw.MAIN_WHEEL_MOTOR_INVERTED);
+        assertEquals(invertTypeToBool(Constants.Claw.MAIN_WHEEL_MOTOR_INVERTED), clawMainWheelMotor.getInverted());
         // require that the follower wheel motor must be a follower to the main wheel motor
-        verify(clawFollowerWheelMotor).set(ControlMode.Follower, clawMainWheelMotor.getDeviceID());
+        assertEquals(ControlMode.Follower, clawFollowerWheelMotor.getControlMode());
+
         // require that the follower wheel motor must be OpposeMaster
-        verify(clawFollowerWheelMotor).setInverted(InvertType.OpposeMaster);
+        assertEquals(
+                invertTypeToBool(invert(InvertType.OpposeMaster, clawMainWheelMotor)),
+                clawFollowerWheelMotor.getInverted()
+        );
 
         final CANcoderConfigurator openCloseEncoderConfigurator = clawOpenCloseEncoder.getConfigurator();
         final CANcoderConfiguration openCloseEncoderConfiguration = new CANcoderConfiguration();
@@ -235,6 +262,11 @@ class ClawIORealTest {
         final CANcoderConfigurator tiltEncoderConfigurator = clawTiltEncoder.getConfigurator();
         final CANcoderConfiguration tiltEncoderConfiguration = new CANcoderConfiguration();
         assertTrue(tiltEncoderConfigurator.refresh(tiltEncoderConfiguration).isOK());
+        // require that the AbsoluteSensorRange should be +1
+        assertEquals(
+                AbsoluteSensorRangeValue.Unsigned_0To1,
+                tiltEncoderConfiguration.MagnetSensor.AbsoluteSensorRange
+        );
     }
 
     @ParameterizedTest
