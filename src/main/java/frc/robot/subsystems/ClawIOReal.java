@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -35,7 +35,7 @@ public class ClawIOReal implements ClawIO {
 
     private final ProfiledPIDController tiltPID;
 
-    private final PositionVoltage positionVoltage = new PositionVoltage(0);
+    private final PositionTorqueCurrentFOC positionTorqueCurrentFOC = new PositionTorqueCurrentFOC(0);
     private final DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
 
     private SuperstructureStates.ClawOpenCloseControlMode openCloseControlMode;
@@ -106,7 +106,9 @@ public class ClawIOReal implements ClawIO {
         clawMainWheelMotor.set(ControlMode.PercentOutput, desiredIntakeWheelsPercentOutput);
 
         switch(openCloseControlMode) {
-            case POSITION -> clawOpenCloseMotor.setControl(positionVoltage.withPosition(desiredOpenCloseControlInput));
+            case POSITION -> clawOpenCloseMotor.setControl(
+                    positionTorqueCurrentFOC.withPosition(desiredOpenCloseControlInput)
+            );
             case DUTY_CYCLE -> clawOpenCloseMotor.setControl(dutyCycleOut.withOutput(desiredOpenCloseControlInput));
         }
 
