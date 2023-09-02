@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -11,7 +10,7 @@ import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -20,6 +19,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxPIDController;
 import frc.robot.Constants;
 import frc.robot.states.SuperstructureStates;
 import org.junit.jupiter.api.*;
@@ -158,6 +158,9 @@ class ClawIORealTest {
     @ParameterizedTest
     @EnumSource(SuperstructureStates.ClawState.class)
     void periodic(final SuperstructureStates.ClawState clawState) {
+        final SparkMaxPIDController clawTiltNeoPID = spy(clawTiltNeo.getPIDController());
+        doReturn(clawTiltNeoPID).when(clawTiltNeo).getPIDController();
+
         clawIOReal.setDesiredState(clawState);
         clawIOReal.periodic();
 
@@ -168,37 +171,35 @@ class ClawIORealTest {
 
         // we can't exactly check the open close motor as it involves phoenix 6 requests like PositionVoltage
         // so just loosely check it for now...
-        // TODO: is this PositionVoltage for positional control?
         switch (clawState.getClawOpenCloseControlMode()) {
-            case POSITION -> verify(clawOpenCloseMotor).setControl((PositionVoltage) any());
-            case DUTY_CYCLE -> verify(clawOpenCloseMotor).setControl((DutyCycleOut) any());
+            case POSITION -> assertInstanceOf(
+                    PositionTorqueCurrentFOC.class,
+                    clawOpenCloseMotor.getAppliedControl()
+            );
+            case DUTY_CYCLE -> assertInstanceOf(DutyCycleOut.class, clawOpenCloseMotor.getAppliedControl());
         }
 
-        // we can't exactly check the tilt motor as it involves PID outputs
-        // not only that, there are multiple ways to demand a DutyCycle to a SparkMAX
-        // (through .set() or .getPIDController().setReference()) -> which means there isn't an easy way to check this
-        // for now, just don't check it at all...
+        // we can't easily check the tilt motor as it involves PID outputs however, not only can we not
+        // check the input itself, there are multiple ways to demand a DutyCycle to a SparkMAX
+        // (through .set() or .getPIDController().setReference())
+
+        // -> the solution to this is to enforce students to only invoke .getPIDController().setReference()
+        // instead of using .set()
+
+        // why? because .set() isn't clear as to what control is being set, and I'd rather be explicitly clear
+        // regarding the actual input, that can just be left as anyDouble()
+        switch (clawState.getClawTiltControlMode()) {
+            case POSITION -> verify(clawTiltNeoPID).setReference(anyDouble(), eq(CANSparkMax.ControlType.kDutyCycle));
+            case DUTY_CYCLE -> assertEquals(clawState.getTiltControlInput(), clawTiltNeo.getAppliedOutput());
+        }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static boolean invertTypeToBool(final InvertType invertType) {
         return switch(invertType){
             case None -> false;
             case InvertMotorOutput -> true;
             default -> throw new RuntimeException(String.format("Cannot convert InvertType %s to bool", invertType));
-        };
-    }
-
-    private static InvertType boolToInvertType(final boolean inverted) {
-        return inverted ? InvertType.InvertMotorOutput : InvertType.None;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private static InvertType invert(final InvertType invertType, final BaseMotorController parent) {
-        return switch(invertType){
-            case None -> InvertType.InvertMotorOutput;
-            case InvertMotorOutput -> InvertType.None;
-            case FollowMaster -> boolToInvertType(parent.getInverted());
-            case OpposeMaster -> boolToInvertType(!parent.getInverted());
         };
     }
 
@@ -214,10 +215,11 @@ class ClawIORealTest {
         assertEquals(ControlMode.Follower, clawFollowerWheelMotor.getControlMode());
 
         // require that the follower wheel motor must be OpposeMaster
-        assertEquals(
-                invertTypeToBool(invert(InvertType.OpposeMaster, clawMainWheelMotor)),
-                clawFollowerWheelMotor.getInverted()
-        );
+        // TODO: maybe there is a way to use an assertion here but, I tried but it seems like its
+        //  not possible to get the current inversion of the motor as an InvertType, only as a bool,
+        //  and that bool won't reflect the changes of FollowMaster or OpposeMaster, as to do that,
+        //  it must call the JNI, but it cannot call the JNI since we're in sim (while we're in a test)
+        verify(clawFollowerWheelMotor).setInverted(InvertType.OpposeMaster);
 
         final CANcoderConfigurator openCloseEncoderConfigurator = clawOpenCloseEncoder.getConfigurator();
         final CANcoderConfiguration openCloseEncoderConfiguration = new CANcoderConfiguration();
