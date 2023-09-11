@@ -38,17 +38,17 @@ class ClawIORealTest {
     private ClawIOReal clawIOReal;
 
     @Spy
-    private TalonSRX clawMainWheelMotor = new TalonSRX(2);
+    private final TalonSRX clawMainWheelMotor = new TalonSRX(2);
     @Spy
-    private TalonSRX clawFollowerWheelMotor = new TalonSRX(3);
+    private final TalonSRX clawFollowerWheelMotor = new TalonSRX(3);
     @Spy
-    private TalonFX clawOpenCloseMotor = new TalonFX(4);
+    private final TalonFX clawOpenCloseMotor = new TalonFX(4);
     @Spy
-    private CANcoder clawOpenCloseEncoder = new CANcoder(5);
+    private final CANcoder clawOpenCloseEncoder = new CANcoder(5);
     @Spy
-    private CANSparkMax clawTiltNeo = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private final CANSparkMax clawTiltNeo = new CANSparkMax(6, CANSparkMaxLowLevel.MotorType.kBrushless);
     @Spy
-    private CANcoder clawTiltEncoder = new CANcoder(7);
+    private final CANcoder clawTiltEncoder = new CANcoder(7);
 
     @BeforeAll
     static void beforeAll() {
